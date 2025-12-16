@@ -1,0 +1,29 @@
+.glitch {
+  animation: glitchBig 0.4s ease-in-out;
+}
+
+@keyframes glitchBig {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1.02) rotate(-1deg);
+    filter: blur(2px);
+    opacity: 0.6;
+  }
+  40% {
+    transform: scale(0.98) rotate(1deg);
+    filter: blur(1px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(1.01) rotate(-0.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: none;
+    opacity: 1;
+  }
+}

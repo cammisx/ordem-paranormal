@@ -1,0 +1,20 @@
+.theme-vhs {
+  --bg: #0b0b0b;
+  --text: #e8e8e8;
+  --accent: #a31616;
+  --font-main: "Courier New", monospace;
+}
+
+.theme-terminal {
+  --bg: #000000;
+  --text: #00ff88;
+  --accent: #00cc66;
+  --font-main: monospace;
+}
+
+.theme-dossie {
+  --bg: #f3f0e8;
+  --text: #111111;
+  --accent: #8b0000;
+  --font-main: "Courier New", monospace;
+}
