@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import ClassPanel from "../panels/ClassPanel";
 import combatente from "../data/classes/combatente";
-
+import ClassPanel from "../panels/ClassPanel";
 
 /* =========================
    DADOS
@@ -41,37 +40,6 @@ const ORIGENS = [
   "universitário",
   "vítima"
 ];
-/* =========================
-   DADOS DE CLASSES (TESTE)
-========================= */
-
-const CLASS_DATA = {
-  combatente: {
-    nome: "COMBATENTE",
-    resumo:
-      "Um perito em armas brancas e de fogo, este agente serve como a linha de frente na luta contra o Outro Lado.",
-    caracteristicas: [
-      "Pontos de vida iniciais: 6 + VIG",
-      "Pontos de esforço iniciais: 4 + PRE",
-      "Sanidade inicial: 20"
-    ],
-    pericias: [
-      "Luta",
-      "Pontaria",
-      "Fortitude",
-      "Reflexos"
-    ],
-    proficiencias: [
-      "Armas simples",
-      "Armas táticas",
-      "Proteções leves"
-    ],
-    habilidades: [
-      "Ataque Especial",
-      "Golpe Pesado"
-    ]
-  }
-};
 
 /* =========================
    COMPONENTE
@@ -117,7 +85,7 @@ export default function Arquivos({ onVoltar }) {
   }, [openClasses, openOrigens]);
 
   /* =========================
-     TECLADO (opcional)
+     TECLADO
   ========================= */
 
   useEffect(() => {
@@ -150,41 +118,34 @@ export default function Arquivos({ onVoltar }) {
      AÇÕES
   ========================= */
 
-function activate(entry) {
-  if (!entry) return;
+  function activate(entry) {
+    if (!entry) return;
 
-  // TOGGLES
-  if (entry.type === "toggle") {
-    if (entry.key === "classes") setOpenClasses(v => !v);
-    if (entry.key === "origens") setOpenOrigens(v => !v);
-    return;
+    if (entry.type === "toggle") {
+      if (entry.key === "classes") setOpenClasses(v => !v);
+      if (entry.key === "origens") setOpenOrigens(v => !v);
+      return;
+    }
+
+    if (entry.type === "item") {
+      const [type, id] = entry.key.split(":");
+      openPanel(type, id);
+    }
   }
 
-  // ITEM → abre painel
-  if (entry.type === "item") {
-    openPanel(entry.label); // ex: "combatente"
-    return;
+  function openPanel(type, id) {
+    if (!panelItem) {
+      setPanelAnim("enter");
+      setPanelItem({ type, id });
+      return;
+    }
+
+    setPanelAnim("");
+    requestAnimationFrame(() => {
+      setPanelItem({ type, id });
+      setPanelAnim("switch");
+    });
   }
-}
-
-
-function openPanel(label) {
-  // PRIMEIRA VEZ QUE ABRE O PAINEL
-  if (!panelItem) {
-    setPanelAnim("enter");
-    setPanelItem(label); // ex: "combatente"
-    return;
-  }
-
-  // PAINEL JÁ ABERTO → troca com animação
-  setPanelAnim("");
-
-  requestAnimationFrame(() => {
-    setPanelItem(label);
-    setPanelAnim("switch");
-  });
-}
-
 
   function closePanel() {
     setPanelAnim("exit");
@@ -251,21 +212,17 @@ function openPanel(label) {
           })}
         </div>
       </div>
-{/* PAINEL LATERAL */}
-{panelItem && (
-  <div className={`panel panel-large ${panelAnim}`}>
-    <button
-      className="close"
-      onClick={closePanel}
-      aria-label="Fechar painel"
-    >
-      ×
-    </button>
 
-    <ClassPanel data={CLASS_DATA[panelItem]} />
-  </div>
-)}
+      {/* PAINEL LATERAL */}
+      {panelItem && (
+        <div className={`panel panel-large ${panelAnim}`}>
+          <button className="close" onClick={closePanel}>×</button>
 
+          {panelItem.type === "classe" && panelItem.id === "combatente" && (
+            <ClassPanel data={combatente} />
+          )}
+        </div>
+      )}
 
       {/* VOLTAR */}
       <button className="back-fixed" onClick={onVoltar}>
