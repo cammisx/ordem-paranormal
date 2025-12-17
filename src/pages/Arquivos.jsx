@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import ClassPanel from "../panels/ClassPanel";
+import combatente from "../data/classes/combatente";
+import especialista from "../data/classes/especialista";
+import ocultista from "../data/classes/ocultista";
 
 /* =========================
    DADOS
@@ -183,6 +186,12 @@ export default function Arquivos({ onVoltar }) {
 
           {panelItem.type === "classe" && panelItem.id === "combatente" && (
             <ClassPanel data={combatente} />
+          )}
+          {panelItem.type === "classe" && panelItem.id === "especialista" && (
+            <ClassPanel data={especialista} />
+          )}
+          {panelItem.type === "classe" && panelItem.id === "ocultista" && (
+            <ClassPanel data={ocultista} />
           )}
         </div>
       )}

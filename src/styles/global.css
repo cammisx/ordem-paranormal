@@ -573,3 +573,6 @@ button {
     transform: translateY(0);
   }
 }
+.resumo {
+  white-space: pre-line;
+}
