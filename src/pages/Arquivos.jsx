@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import combatente from "../data/classes/combatente";
 import ClassPanel from "../panels/ClassPanel";
 
 /* =========================
@@ -41,35 +40,22 @@ const ORIGENS = [
   "vítima"
 ];
 
-/* =========================
-   COMPONENTE
-========================= */
-
 export default function Arquivos({ onVoltar }) {
-  /* =========================
-     ESTADOS
-  ========================= */
-
   const [openClasses, setOpenClasses] = useState(false);
   const [openOrigens, setOpenOrigens] = useState(false);
 
-  // painel lateral
+  // painel lateral: agora é sempre um objeto
   const [panelItem, setPanelItem] = useState(null);
-  // panelItem = { type: "classe" | "origem", id: string }
 
   const [panelAnim, setPanelAnim] = useState("enter");
   const [cursor, setCursor] = useState(0);
-
-  /* =========================
-     LISTA VISÍVEL
-  ========================= */
 
   const visibleItems = useMemo(() => {
     const items = [];
 
     items.push({ type: "toggle", key: "classes", label: "classes" });
     if (openClasses) {
-      CLASSES.forEach(c =>
+      CLASSES.forEach(c => 
         items.push({ type: "item", key: `classe:${c}`, label: c })
       );
     }
@@ -84,27 +70,20 @@ export default function Arquivos({ onVoltar }) {
     return items;
   }, [openClasses, openOrigens]);
 
-  /* =========================
-     TECLADO
-  ========================= */
-
   useEffect(() => {
     function onKey(e) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
         setCursor(c => Math.min(c + 1, visibleItems.length - 1));
       }
-
       if (e.key === "ArrowUp") {
         e.preventDefault();
         setCursor(c => Math.max(c - 1, 0));
       }
-
       if (e.key === "Enter") {
         e.preventDefault();
         activate(visibleItems[cursor]);
       }
-
       if (e.key === "Escape") {
         if (panelItem) closePanel();
       }
@@ -113,10 +92,6 @@ export default function Arquivos({ onVoltar }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [cursor, visibleItems, panelItem]);
-
-  /* =========================
-     AÇÕES
-  ========================= */
 
   function activate(entry) {
     if (!entry) return;
@@ -154,13 +129,8 @@ export default function Arquivos({ onVoltar }) {
     }, 250);
   }
 
-  /* =========================
-     RENDER
-  ========================= */
-
   return (
     <div className="screen arquivos">
-      {/* FUNDO VHS */}
       <div className="vhs-bg">
         <div className="layer" />
         <div className="layer red" />
@@ -168,7 +138,6 @@ export default function Arquivos({ onVoltar }) {
         <div className="noise" />
       </div>
 
-      {/* MENU */}
       <div className="arquivos-menu">
         <h1 className="title glitch" data-text="ARQUIVOS">
           ARQUIVOS
@@ -178,11 +147,8 @@ export default function Arquivos({ onVoltar }) {
         <div className="menu show">
           {visibleItems.map((entry, i) => {
             const selected = i === cursor;
-
             if (entry.type === "toggle") {
-              const open =
-                entry.key === "classes" ? openClasses : openOrigens;
-
+              const open = entry.key === "classes" ? openClasses : openOrigens;
               return (
                 <p
                   key={entry.key}
@@ -193,7 +159,6 @@ export default function Arquivos({ onVoltar }) {
                 </p>
               );
             }
-
             if (entry.type === "item") {
               return (
                 <p
@@ -207,13 +172,11 @@ export default function Arquivos({ onVoltar }) {
                 </p>
               );
             }
-
             return null;
           })}
         </div>
       </div>
 
-      {/* PAINEL LATERAL */}
       {panelItem && (
         <div className={`panel panel-large ${panelAnim}`}>
           <button className="close" onClick={closePanel}>×</button>
@@ -224,7 +187,6 @@ export default function Arquivos({ onVoltar }) {
         </div>
       )}
 
-      {/* VOLTAR */}
       <button className="back-fixed" onClick={onVoltar}>
         &lt; voltar
       </button>
